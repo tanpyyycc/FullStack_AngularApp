@@ -1,0 +1,123 @@
+<section class="page">
+  @if (isEditMode) {
+    <h1>Edit Gym Leader</h1>
+  } @else {
+    <h1>Register a Gym Leader</h1>
+  }
+
+  @if (serverError()) {
+    <p class="error" role="alert">{{ serverError() }}</p>
+  }
+
+  <form [formGroup]="form" (ngSubmit)="save()">
+    @let nameError = errorFor('name');
+    <div class="field">
+      <label for="name">Name</label>
+      <input
+        id="name"
+        type="text"
+        formControlName="name"
+        [attr.aria-invalid]="nameError ? 'true' : null"
+        [attr.aria-describedby]="nameError ? 'name-error' : null"
+      />
+      @if (nameError) {
+        <p id="name-error" class="error">{{ nameError }}</p>
+      }
+    </div>
+
+    <div class="field">
+      <label for="region">Region</label>
+      <select id="region" formControlName="region">
+        @for (region of regions; track region) {
+          <option [value]="region">{{ region }}</option>
+        }
+      </select>
+    </div>
+
+    @let townError = errorFor('town');
+    <div class="field">
+      <label for="town">Town</label>
+      <input
+        id="town"
+        type="text"
+        formControlName="town"
+        [attr.aria-invalid]="townError ? 'true' : null"
+        [attr.aria-describedby]="townError ? 'town-error' : null"
+      />
+      @if (townError) {
+        <p id="town-error" class="error">{{ townError }}</p>
+      }
+    </div>
+
+    @let badgeError = errorFor('badge');
+    <div class="field">
+      <label for="badge">Badge</label>
+      <input
+        id="badge"
+        type="text"
+        formControlName="badge"
+        [attr.aria-invalid]="badgeError ? 'true' : null"
+        [attr.aria-describedby]="badgeError ? 'badge-error' : null"
+      />
+      @if (badgeError) {
+        <p id="badge-error" class="error">{{ badgeError }}</p>
+      }
+    </div>
+
+    @let specialtyError = errorFor('specialty');
+    <div class="field">
+      <label for="specialty">Specialty</label>
+      <input
+        id="specialty"
+        type="text"
+        formControlName="specialty"
+        [attr.aria-invalid]="specialtyError ? 'true' : null"
+        [attr.aria-describedby]="specialtyError ? 'specialty-error' : null"
+      />
+      @if (specialtyError) {
+        <p id="specialty-error" class="error">{{ specialtyError }}</p>
+      }
+    </div>
+
+    @let aceLevelError = errorFor('aceLevel');
+    <div class="field">
+      <label for="aceLevel">Ace level (1 to 100)</label>
+      <input
+        id="aceLevel"
+        type="number"
+        formControlName="aceLevel"
+        [attr.aria-invalid]="aceLevelError ? 'true' : null"
+        [attr.aria-describedby]="aceLevelError ? 'aceLevel-error' : null"
+      />
+      @if (aceLevelError) {
+        <p id="aceLevel-error" class="error">{{ aceLevelError }}</p>
+      }
+    </div>
+
+    @let mottoError = errorFor('motto');
+    <div class="field">
+      <label for="motto">Motto (optional)</label>
+      <textarea
+        id="motto"
+        rows="3"
+        formControlName="motto"
+        [attr.aria-invalid]="mottoError ? 'true' : null"
+        [attr.aria-describedby]="mottoError ? 'motto-error' : null"
+      ></textarea>
+      @if (mottoError) {
+        <p id="motto-error" class="error">{{ mottoError }}</p>
+      }
+    </div>
+
+    <div class="actions">
+      <button type="submit" class="btn btn-primary" [disabled]="form.invalid || saving()">
+        @if (isEditMode) {
+          Save Changes
+        } @else {
+          Add Leader
+        }
+      </button>
+      <button type="button" class="btn" (click)="cancel()">Cancel</button>
+    </div>
+  </form>
+</section>
