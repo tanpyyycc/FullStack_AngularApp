@@ -20,7 +20,7 @@ const gymLeaderSchema = new mongoose.Schema({
   town:      { type: String, required: true, trim: true },
   badge:     { type: String, required: true, trim: true },
   aceLevel:  { type: Number, required: true, min: 1, max: 100 },
-  motto:     { type: String, required: true, trim: true },
+  motto:     { type: String, trim: true, maxlength: 150 },
 });
 
 const GymLeader = mongoose.model('GymLeader', gymLeaderSchema);
@@ -39,33 +39,33 @@ app.get('/api/leaders', async (req, res) => {
     res.status(201).json(leaders);
     } catch (err) {
         console.error(err);
-        res.status(500).json({message: err message });
+        res.status(500).json({ message: err.message });
     }
 });
 
 // READING ONE
 app.get('/api/leaders/:id', checkId, async (req, res) => {
     try {
-    const leaders = await GymLeader.findById(req.params.id);
+    const leader = await GymLeader.findById(req.params.id);
     if (!leader) {
       return res.status(404).json({ message: 'Gym leader not found' });
     }
-    res.status(201).json(leaders);
+    res.status(201).json(leader);
     } catch (err) {
         console.error(err);
-        res.status(500).json({message: err message });
+        res.status(500).json({ message: err.message });
     }
 });
 
 // CREATING
 app.post('/api/leaders', async (req, res) => {
     try{
-        const leaders = new GymLeader(req.body);
+        const leader = new GymLeader(req.body);
         const saved = await leader.save();
         res.status(201).json(saved)
     } catch (err) {
         console.error(err);
-        res.status(400).json({message: err message });
+        res.status(400).json({ message: err.message });
     }
 })
 
@@ -74,7 +74,7 @@ app.post('/api/leaders', async (req, res) => {
 app.put('/api/leaders/:id', checkId, async (req, res) => {
   try {
     const updated = await GymLeader.findByIdAndUpdate(req.params.id, req.body, {
-      new: true, 
+       returnDocument: 'after' , 
       runValidators: true,
     });
     if (!updated) {
@@ -88,7 +88,7 @@ app.put('/api/leaders/:id', checkId, async (req, res) => {
 });
  
 // DELETE
-app.delete('/api/pokemon/:id', checkId, async (req, res) => {
+app.delete('/api/leaders/:id', checkId, async (req, res) => {
   try {
     const deleted = await GymLeader.findByIdAndDelete(req.params.id);
     if (!deleted) {

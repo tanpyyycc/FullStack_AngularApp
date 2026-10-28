@@ -1,5 +1,5 @@
 import { Component, computed, input, output } from '@angular/core';
-import { GymLeader } from '../gym-leader.model';
+import { GymLeader } from '../models/gym-leader.model';
 
 @Component({
   selector: 'app-leader-card',
